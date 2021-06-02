@@ -43,7 +43,7 @@ func IsUserRegistered(docID string) (bool,error) {
 
 func AddArchiveToMongoDocument(d *CreateArchiveRequest) error {
 	collectionName := shashankMongo.DatabaseName.Collection("archive")
-	result, insertErr := collectionName.InsertOne(shashankMongo.CtxForDB, d)
+	_, insertErr := collectionName.InsertOne(shashankMongo.CtxForDB, d)
 	if insertErr != nil {
 		log.Error("AddArchiveToMongoDocument ERROR:")
 		log.Error(insertErr)
