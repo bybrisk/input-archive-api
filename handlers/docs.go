@@ -57,3 +57,19 @@ type createArchiveParmsWrapper struct {
 	// required: true
 	Body data.CreateArchiveRequest
 }
+
+// Message on getting archives pagewise.
+// swagger:response getArchiveResponsePagewise
+type getArchivePagewisePostResponseWrapper struct {
+	// response for fetching archives pagewise
+	// in: body
+	Body data.GetArchiveResponsePagewise
+}
+
+// swagger:parameters getArchivePagewise
+type getArchivePagewiseParmsWrapper struct {
+	// Data structure to fetch archives pagewise
+	// in: body
+	// required: true
+	Body data.GetArchiveRequestPagewise
+}

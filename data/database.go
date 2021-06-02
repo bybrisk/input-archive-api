@@ -6,7 +6,7 @@ import (
 	"github.com/shashank404error/shashankMongo"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	//"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func IsUserRegistered(docID string) (bool,error) {
@@ -50,4 +50,31 @@ func AddArchiveToMongoDocument(d *CreateArchiveRequest) error {
 	} 
 
 	return insertErr
+}
+
+func GetArchiveFromMongoDocument(d *GetArchiveRequestPagewise) (PagewiseArchiveReponseFromDB,error) {
+
+	var document []PagewiseArchiveReponseFromDB
+	var response PagewiseArchiveReponseFromDB
+	collectionName := shashankMongo.DatabaseName.Collection("archive")
+
+	options := options.Find()
+	options.SetSort(bson.D{{"rankingindex", -1}})
+	options.SetSkip(d.Page-1)
+	options.SetLimit(1)
+
+	cursor, err := collectionName.Find(shashankMongo.CtxForDB, bson.M{"businessid":d.BusinessID,"userid":d.UserID},options)
+	if err != nil {
+		log.Error("AllAgentsByBusinessID Read ERROR : ")
+		log.Error(err)
+	}
+	if err = cursor.All(shashankMongo.CtxForDB, &document); err != nil {
+		log.Error("AllAgentsByBusinessID Write ERROR : ")
+		log.Error(err)
+	}
+
+	if len(document)>0 {
+		response = document[0]
+	}
+	return response,err
 }
