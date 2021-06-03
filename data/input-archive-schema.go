@@ -40,6 +40,11 @@ type CreateArchiveRequest struct{
 	// max length: 1000
 	RankingIndex int64 `json:"rankingIndex"`
 
+	// The action handler in context to transaction
+	//
+	// required: true
+	ActionHandler string `json: "actionHandler" validate:"required"`
+
 	// Transaction object to be sent as a payload
 	//
 	// required: true
